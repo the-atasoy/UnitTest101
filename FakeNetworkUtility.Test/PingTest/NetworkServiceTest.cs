@@ -1,4 +1,6 @@
-﻿using FakeNetworkUtility.Ping;
+﻿using FakeItEasy;
+using FakeNetworkUtility.DNS;
+using FakeNetworkUtility.Ping;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
@@ -11,16 +13,23 @@ namespace FakeNetworkUtility.Test.Ping
 {
     public class NetworkServiceTest
     {
-        private readonly NetworkService _pingService; 
+        private readonly NetworkService _pingService;
+        private readonly IDNS _dns;
+
         public NetworkServiceTest()
         {
+            // dependencies
+            _dns = A.Fake<IDNS>();
+
             // SUT(System Under Test)
-            _pingService = new NetworkService();
+            _pingService = new NetworkService(_dns);
         }
         // Facts are tests which are always true. They test invariant conditions.
         [Fact]
         public void NetworkService_SendPing_ReturnsString()
         {
+            //arrange
+            A.CallTo(() => _dns.SendDns()).Returns(true);
             // act
             var result = _pingService.SendPing();
 
