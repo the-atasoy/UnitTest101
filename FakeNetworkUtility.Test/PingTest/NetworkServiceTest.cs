@@ -19,6 +19,7 @@ namespace FakeNetworkUtility.Test.Ping
         public NetworkServiceTest()
         {
             // dependencies
+            // mocking
             _dns = A.Fake<IDNS>();
 
             // SUT(System Under Test)
@@ -28,7 +29,8 @@ namespace FakeNetworkUtility.Test.Ping
         [Fact]
         public void NetworkService_SendPing_ReturnsString()
         {
-            //arrange
+            // arrange
+            // mocking
             A.CallTo(() => _dns.SendDns()).Returns(true);
             // act
             var result = _pingService.SendPing();
